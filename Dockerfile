@@ -3,15 +3,14 @@ LABEL maintainer="CriticalBlue Ltd."
 
 # # BUILD DEPENDENCIES #
 RUN yum update -y \
-  && yum install -y epel-release yum-utils \
-  && yum-config-manager --enable epel \
   && yum install -y \
-    ansible \
     git \
     jq \
     tar \
     unzip \
-    vim
+    yum-utils \
+    vim \
+  && amazon-linux-extras install -y ansible2
 
 # BUILD DEPENDENCIES #
 

@@ -1,5 +1,5 @@
 FROM amazonlinux:2.0.20190228
-MAINTAINER CriticalBlue Ltd.
+LABEL maintainer="CriticalBlue Ltd."
 
 # # BUILD DEPENDENCIES #
 RUN yum update -y \

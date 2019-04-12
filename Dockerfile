@@ -1,7 +1,7 @@
 FROM amazonlinux:2.0.20190228
 LABEL maintainer="CriticalBlue Ltd."
 
-# # BUILD DEPENDENCIES #
+# BUILD DEPENDENCIES #
 RUN yum update -y \
   && yum install -y \
     git \
@@ -11,12 +11,11 @@ RUN yum update -y \
     yum-utils \
     vim \
   && amazon-linux-extras install -y ansible2
-
 # BUILD DEPENDENCIES #
 
 ## Golang
 
-ENV GOLANG_VERSION 1.12.3
+ENV GOLANG_VERSION 1.10.8
 ENV GOLANG_DOWNLOAD_URL https://golang.org/dl/go$GOLANG_VERSION.linux-amd64.tar.gz
 ENV GOLANG_DOWNLOAD_SHA256 3924819eed16e55114f02d25d03e77c916ec40b7fd15c8acb5838b63135b03df
 

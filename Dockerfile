@@ -6,12 +6,13 @@ RUN yum update -y \
   && yum install -y \
     git \
     jq \
+    rsync \
     sudo \
     tar \
     unzip \
     yum-utils \
     vim \
-  && amazon-linux-extras install -y ansible2
+  && amazon-linux-extras install -y ansible2=2.4.6
 # BUILD DEPENDENCIES #
 
 ## Golang

@@ -33,17 +33,20 @@ ENV PACKER_DOWNLOAD_SHA256 14922d2bca532ad6ee8e936d5ad0788eba96f773bcdcde8c2dc7c
 # Install packer; removing the symlinked cracklib naming conflict that would
 # prevent the newly installed executable from being found
 #
+# Then add a new "tester" user for performing the builds
+#
 # Then create the /go root directory and change its owner to ec2-user
 RUN curl -fsSL "$PACKER_DOWNLOAD_URL" -o packer.zip \
   && echo "$PACKER_DOWNLOAD_SHA256 packer.zip" | sha256sum -c - \
   && unzip packer.zip -d /usr/local/bin/ \
   && rm packer.zip \
   && rm /usr/sbin/packer \
+  && adduser tester \
   && mkdir /go \
-  && chown -R ec2-user:ec2-user /go
+  && chown -R tester:tester /go
 
-# Switch to ec2-user
-USER ec2-user
+# Switch to tester user
+USER tester
 WORKDIR /go
 
 # Setup Go Environment Variables

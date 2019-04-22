@@ -30,27 +30,33 @@ ENV PACKER_VERSION 1.3.5
 ENV PACKER_DOWNLOAD_URL https://releases.hashicorp.com/packer/"$PACKER_VERSION"/packer_"$PACKER_VERSION"_linux_amd64.zip
 ENV PACKER_DOWNLOAD_SHA256 14922d2bca532ad6ee8e936d5ad0788eba96f773bcdcde8c2dc7c95f830841ec
 
+# Install packer; removing the symlinked cracklib naming conflict that would
+# prevent the newly installed executable from being found
+#
+# Then create the /go root directory and change its owner to ec2-user
 RUN curl -fsSL "$PACKER_DOWNLOAD_URL" -o packer.zip \
   && echo "$PACKER_DOWNLOAD_SHA256 packer.zip" | sha256sum -c - \
   && unzip packer.zip -d /usr/local/bin/ \
-  && rm packer.zip
+  && rm packer.zip \
+  && rm /usr/sbin/packer \
+  && mkdir /go \
+  && chown -R ec2-user:ec2-user /go
 
-# Avoid symlinked cracklib naming conflict
-RUN rm /usr/sbin/packer
+# Switch to ec2-user
+USER ec2-user
+WORKDIR /go
 
 # Setup Go Environment Variables
 ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
-# Setup go file structure and install Go testing tools
-RUN mkdir /go \
-  && go get github.com/tebeka/go2xunit \
+# Install Go testing tools
+RUN go get github.com/tebeka/go2xunit \
   && go get github.com/axw/gocov/gocov \
   && go get github.com/AlekSi/gocov-xml \
   && go get github.com/githubnemo/CompileDaemon
 
 ## Networking
-
 ENV PORT 8081
 ENV CBPORT 8082
 

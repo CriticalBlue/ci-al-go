@@ -6,6 +6,7 @@ RUN yum update -y \
   && yum install -y \
     git \
     jq \
+    sudo \
     tar \
     unzip \
     yum-utils \
@@ -33,7 +34,8 @@ ENV PACKER_DOWNLOAD_SHA256 14922d2bca532ad6ee8e936d5ad0788eba96f773bcdcde8c2dc7c
 # Install packer; removing the symlinked cracklib naming conflict that would
 # prevent the newly installed executable from being found
 #
-# Then add a new "tester" user for performing the builds
+# Then add a new "tester" user for performing the builds, add tester to the
+# sudoers list
 #
 # Then create the /go root directory and change its owner to ec2-user
 RUN curl -fsSL "$PACKER_DOWNLOAD_URL" -o packer.zip \
@@ -42,6 +44,8 @@ RUN curl -fsSL "$PACKER_DOWNLOAD_URL" -o packer.zip \
   && rm packer.zip \
   && rm /usr/sbin/packer \
   && adduser tester \
+  && echo "tester ALL = NOPASSWD: ALL" > /etc/sudoers.d/tester-init \
+  && echo "tester ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/tester-init \
   && mkdir /go \
   && chown -R tester:tester /go
 

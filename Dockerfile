@@ -17,9 +17,9 @@ RUN yum update -y \
 
 ## Golang
 
-ENV GOLANG_VERSION 1.10.8
+ENV GOLANG_VERSION 1.11.10
 ENV GOLANG_DOWNLOAD_URL https://golang.org/dl/go$GOLANG_VERSION.linux-amd64.tar.gz
-ENV GOLANG_DOWNLOAD_SHA256 d8626fb6f9a3ab397d88c483b576be41fa81eefcec2fd18562c87626dbb3c39e
+ENV GOLANG_DOWNLOAD_SHA256 aefaa228b68641e266d1f23f1d95dba33f17552ba132878b65bb798ffa37e6d0
 
 RUN curl -fsSL "$GOLANG_DOWNLOAD_URL" -o golang.tar.gz \
   && echo "$GOLANG_DOWNLOAD_SHA256  golang.tar.gz" | sha256sum -c - \

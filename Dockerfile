@@ -1,4 +1,4 @@
-FROM amazonlinux:2.0.20190228
+FROM amazonlinux:2.0.20190508
 LABEL maintainer="CriticalBlue Ltd."
 
 # BUILD DEPENDENCIES #
@@ -17,9 +17,9 @@ RUN yum update -y \
 
 ## Golang
 
-ENV GOLANG_VERSION 1.11.10
+ENV GOLANG_VERSION 1.12.6
 ENV GOLANG_DOWNLOAD_URL https://golang.org/dl/go$GOLANG_VERSION.linux-amd64.tar.gz
-ENV GOLANG_DOWNLOAD_SHA256 aefaa228b68641e266d1f23f1d95dba33f17552ba132878b65bb798ffa37e6d0
+ENV GOLANG_DOWNLOAD_SHA256 dbcf71a3c1ea53b8d54ef1b48c85a39a6c9a935d01fc8291ff2b92028e59913c
 
 RUN curl -fsSL "$GOLANG_DOWNLOAD_URL" -o golang.tar.gz \
   && echo "$GOLANG_DOWNLOAD_SHA256  golang.tar.gz" | sha256sum -c - \
@@ -38,7 +38,7 @@ ENV PACKER_DOWNLOAD_SHA256 14922d2bca532ad6ee8e936d5ad0788eba96f773bcdcde8c2dc7c
 # Then add a new "tester" user for performing the builds, add tester to the
 # sudoers list
 #
-# Then create the /go root directory and change its owner to ec2-user
+# Then create the /go root directory and change its owner to tester
 RUN curl -fsSL "$PACKER_DOWNLOAD_URL" -o packer.zip \
   && echo "$PACKER_DOWNLOAD_SHA256 packer.zip" | sha256sum -c - \
   && unzip packer.zip -d /usr/local/bin/ \
@@ -59,6 +59,8 @@ ENV GOPATH /go
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
 # Install Go testing tools
+#
+# Configure git to use ssh for retrieving go dependencies from gitlab
 RUN go get github.com/tebeka/go2xunit \
   && go get github.com/axw/gocov/gocov \
   && go get github.com/AlekSi/gocov-xml \

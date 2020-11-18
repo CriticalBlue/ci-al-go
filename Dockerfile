@@ -1,4 +1,4 @@
-FROM amazonlinux:2.0.20200207.1
+FROM amazonlinux:2.0.20200722.0
 LABEL maintainer="CriticalBlue Ltd."
 
 # BUILD DEPENDENCIES #
@@ -17,9 +17,9 @@ RUN yum update -y \
 
 ## Golang
 
-ENV GOLANG_VERSION 1.14.1
+ENV GOLANG_VERSION 1.15.5
 ENV GOLANG_DOWNLOAD_URL https://golang.org/dl/go$GOLANG_VERSION.linux-amd64.tar.gz
-ENV GOLANG_DOWNLOAD_SHA256 2f49eb17ce8b48c680cdb166ffd7389702c0dec6effa090c324804a5cac8a7f8
+ENV GOLANG_DOWNLOAD_SHA256 9a58494e8da722c3aef248c9227b0e9c528c7318309827780f16220998180a0d
 
 RUN curl -fsSL "$GOLANG_DOWNLOAD_URL" -o golang.tar.gz \
   && echo "$GOLANG_DOWNLOAD_SHA256  golang.tar.gz" | sha256sum -c - \
@@ -28,9 +28,9 @@ RUN curl -fsSL "$GOLANG_DOWNLOAD_URL" -o golang.tar.gz \
 
 # Packer
 
-ENV PACKER_VERSION 1.5.5
+ENV PACKER_VERSION 1.5.6
 ENV PACKER_DOWNLOAD_URL https://releases.hashicorp.com/packer/"$PACKER_VERSION"/packer_"$PACKER_VERSION"_linux_amd64.zip
-ENV PACKER_DOWNLOAD_SHA256 07f28a1a033f4bcd378a109ec1df6742ac604e7b122d0316d2cddb3c2f6c24d1
+ENV PACKER_DOWNLOAD_SHA256 2abb95dc3a5fcfb9bf10ced8e0dd51d2a9e6582a1de1cab8ccec650101c1f9df
 
 # Install packer; removing the symlinked cracklib naming conflict that would
 # prevent the newly installed executable from being found

@@ -1,4 +1,4 @@
-FROM amazonlinux:2.0.20200722.0
+FROM amazonlinux:2.0.20201218.1
 LABEL maintainer="CriticalBlue Ltd."
 
 # BUILD DEPENDENCIES #
@@ -17,9 +17,9 @@ RUN yum update -y \
 
 ## Golang
 
-ENV GOLANG_VERSION 1.15.5
+ENV GOLANG_VERSION 1.15.6
 ENV GOLANG_DOWNLOAD_URL https://golang.org/dl/go$GOLANG_VERSION.linux-amd64.tar.gz
-ENV GOLANG_DOWNLOAD_SHA256 9a58494e8da722c3aef248c9227b0e9c528c7318309827780f16220998180a0d
+ENV GOLANG_DOWNLOAD_SHA256 3918e6cc85e7eaaa6f859f1bdbaac772e7a825b0eb423c63d3ae68b21f84b844
 
 RUN curl -fsSL "$GOLANG_DOWNLOAD_URL" -o golang.tar.gz \
   && echo "$GOLANG_DOWNLOAD_SHA256  golang.tar.gz" | sha256sum -c - \

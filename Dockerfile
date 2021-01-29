@@ -1,18 +1,35 @@
-FROM amazonlinux:2.0.20201218.1
+FROM amazonlinux:2.0.20210126.0
 LABEL maintainer="CriticalBlue Ltd."
 
 # BUILD DEPENDENCIES #
+#    python3 python3-pip python3-setuptools \
+#  && sudo -H pip3 install ansible==2.4.6
+
 RUN yum update -y \
   && yum install -y \
     git \
     jq \
+    python3 python3-pip python3-setuptools \
     rsync \
     sudo \
     tar \
     unzip \
     yum-utils \
     vim \
-  && amazon-linux-extras install -y ansible2=2.4.6
+  && sudo -H pip3 install ansible==2.4.6
+
+# RUN yum update -y \
+#   && yum install -y \
+#     git \
+#     jq \
+#     rsync \
+#     sudo \
+#     tar \
+#     unzip \
+#     yum-utils \
+#     vim \
+#   && amazon-linux-extras install -y ansible2=2.4.6
+
 # BUILD DEPENDENCIES #
 
 ## Golang

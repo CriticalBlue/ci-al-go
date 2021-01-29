@@ -16,7 +16,7 @@ RUN yum update -y \
     unzip \
     yum-utils \
     vim \
-  && sudo -H pip3 install ansible==2.4.6
+  && sudo -H pip3 install ansible==2.5.14
 
 # RUN yum update -y \
 #   && yum install -y \

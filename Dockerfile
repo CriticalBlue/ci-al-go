@@ -1,9 +1,7 @@
-FROM amazonlinux:2.0.20210126.0
+FROM amazonlinux:2.0.20211001.0
 LABEL maintainer="CriticalBlue Ltd."
 
 # BUILD DEPENDENCIES #
-#    python3 python3-pip python3-setuptools \
-#  && sudo -H pip3 install ansible==2.4.6
 
 RUN yum update -y \
   && yum install -y \
@@ -18,25 +16,11 @@ RUN yum update -y \
     vim \
   && sudo -H pip3 install ansible==2.5.14
 
-# RUN yum update -y \
-#   && yum install -y \
-#     git \
-#     jq \
-#     rsync \
-#     sudo \
-#     tar \
-#     unzip \
-#     yum-utils \
-#     vim \
-#   && amazon-linux-extras install -y ansible2=2.4.6
-
-# BUILD DEPENDENCIES #
-
 ## Golang
 
-ENV GOLANG_VERSION 1.15.6
+ENV GOLANG_VERSION 1.16.9
 ENV GOLANG_DOWNLOAD_URL https://golang.org/dl/go$GOLANG_VERSION.linux-amd64.tar.gz
-ENV GOLANG_DOWNLOAD_SHA256 3918e6cc85e7eaaa6f859f1bdbaac772e7a825b0eb423c63d3ae68b21f84b844
+ENV GOLANG_DOWNLOAD_SHA256 d2c095c95f63c2a3ef961000e0ecb9d81d5c68b6ece176e2a8a2db82dc02931c
 
 RUN curl -fsSL "$GOLANG_DOWNLOAD_URL" -o golang.tar.gz \
   && echo "$GOLANG_DOWNLOAD_SHA256  golang.tar.gz" | sha256sum -c - \
@@ -51,17 +35,14 @@ ENV PACKER_DOWNLOAD_SHA256 2abb95dc3a5fcfb9bf10ced8e0dd51d2a9e6582a1de1cab8ccec6
 
 # Install packer; removing the symlinked cracklib naming conflict that would
 # prevent the newly installed executable from being found
-#
-# Then add a new "tester" user for performing the builds, add tester to the
-# sudoers list
-#
-# Then create the /go root directory and change its owner to tester
 RUN curl -fsSL "$PACKER_DOWNLOAD_URL" -o packer.zip \
   && echo "$PACKER_DOWNLOAD_SHA256 packer.zip" | sha256sum -c - \
   && unzip packer.zip -d /usr/local/bin/ \
   && rm packer.zip \
-  && rm /usr/sbin/packer \
-  && adduser tester \
+  && rm /usr/sbin/packer
+
+# Create tester user and working directory
+RUN adduser tester \
   && echo "tester ALL = NOPASSWD: ALL" > /etc/sudoers.d/tester-init \
   && echo "tester ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/tester-init \
   && mkdir /go \

@@ -1,4 +1,4 @@
-FROM amazonlinux:2.0.20211001.0
+FROM amazonlinux:2.0.20221004.0
 LABEL maintainer="CriticalBlue Ltd."
 
 # BUILD DEPENDENCIES #
@@ -18,9 +18,9 @@ RUN yum update -y \
 
 ## Golang
 
-ENV GOLANG_VERSION 1.16.9
+ENV GOLANG_VERSION 1.18.7
 ENV GOLANG_DOWNLOAD_URL https://golang.org/dl/go$GOLANG_VERSION.linux-amd64.tar.gz
-ENV GOLANG_DOWNLOAD_SHA256 d2c095c95f63c2a3ef961000e0ecb9d81d5c68b6ece176e2a8a2db82dc02931c
+ENV GOLANG_DOWNLOAD_SHA256 6c967efc22152ce3124fc35cdf50fc686870120c5fd2107234d05d450a6105d8
 
 RUN curl -fsSL "$GOLANG_DOWNLOAD_URL" -o golang.tar.gz \
   && echo "$GOLANG_DOWNLOAD_SHA256  golang.tar.gz" | sha256sum -c - \
@@ -54,15 +54,15 @@ WORKDIR /go
 
 # Setup Go Environment Variables
 ENV GOPATH /go
-ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
+ENV PATH $PATH:/usr/local/go/bin:$GOPATH/bin
 
 # Install Go testing tools
 #
 # Configure git to use ssh for retrieving go dependencies from gitlab
-RUN go get github.com/tebeka/go2xunit \
-  && go get github.com/axw/gocov/gocov \
-  && go get github.com/AlekSi/gocov-xml \
-  && go get github.com/githubnemo/CompileDaemon
+RUN go install github.com/tebeka/go2xunit@latest \
+  && go install github.com/axw/gocov/gocov@latest \
+  && go install github.com/AlekSi/gocov-xml@latest \
+  && go install github.com/githubnemo/CompileDaemon@latest
 
 ## Networking
 ENV PORT 8081

@@ -1,4 +1,4 @@
-FROM amazonlinux:2.0.20221004.0
+FROM amazonlinux:2.0.20230307.0
 LABEL maintainer="CriticalBlue Ltd."
 
 # BUILD DEPENDENCIES #
@@ -14,13 +14,14 @@ RUN yum update -y \
     unzip \
     yum-utils \
     vim \
-  && sudo -H pip3 install ansible==2.5.14
+  && sudo amazon-linux-extras install python3.8 \
+  && sudo -H python3.8 -m pip install ansible==6.7.0
 
 ## Golang
 
-ENV GOLANG_VERSION 1.18.7
+ENV GOLANG_VERSION 1.19.7
 ENV GOLANG_DOWNLOAD_URL https://golang.org/dl/go$GOLANG_VERSION.linux-amd64.tar.gz
-ENV GOLANG_DOWNLOAD_SHA256 6c967efc22152ce3124fc35cdf50fc686870120c5fd2107234d05d450a6105d8
+ENV GOLANG_DOWNLOAD_SHA256 7a75720c9b066ae1750f6bcc7052aba70fa3813f4223199ee2a2315fd3eb533d
 
 RUN curl -fsSL "$GOLANG_DOWNLOAD_URL" -o golang.tar.gz \
   && echo "$GOLANG_DOWNLOAD_SHA256  golang.tar.gz" | sha256sum -c - \

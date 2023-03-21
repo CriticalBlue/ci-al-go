@@ -7,3 +7,9 @@ so we can start using proper tags of the repo and docker images without
 impacting existing CI flows. With a proper tagging strategy we can use
 different versions of this project from different branches of dependent
 projects without impacting unrelated CI builds.
+
+Manual builds should use the following tag naming scheme:
+
+```
+docker build -t "approov/ci-al-go:al<amazon-linux-version>-go<go-version>" .
+```

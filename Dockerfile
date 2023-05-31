@@ -42,15 +42,9 @@ RUN curl -fsSL "$PACKER_DOWNLOAD_URL" -o packer.zip \
   && rm packer.zip \
   && rm /usr/sbin/packer
 
-# Create tester user and working directory
-RUN adduser tester \
-  && echo "tester ALL = NOPASSWD: ALL" > /etc/sudoers.d/tester-init \
-  && echo "tester ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/tester-init \
-  && mkdir /go \
-  && chown -R tester:tester /go
+# Create the working directory
+RUN mkdir /go
 
-# Switch to tester user
-USER tester
 WORKDIR /go
 
 # Setup Go Environment Variables

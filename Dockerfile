@@ -14,8 +14,10 @@ RUN yum update -y \
     unzip \
     yum-utils \
     vim \
-  && sudo amazon-linux-extras install python3.8 \
-  && sudo -H python3.8 -m pip install ansible==6.7.0
+  && sudo amazon-linux-extras install python3.8 epel -y \
+  && sudo -H python3.8 -m pip install ansible==6.7.0 \
+  && sudo yum-config-manager --enable epel \
+  && yum install git-lfs -y
 
 ## Golang
 
@@ -58,6 +60,11 @@ RUN go install github.com/tebeka/go2xunit@latest \
   && go install github.com/axw/gocov/gocov@latest \
   && go install github.com/AlekSi/gocov-xml@latest \
   && go install github.com/githubnemo/CompileDaemon@latest
+
+# Add the tester user
+RUN adduser -mG root tester \
+  && echo "tester ALL = NOPASSWD: ALL" > /etc/sudoers.d/tester-init \
+  && echo "tester ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/tester-init
 
 ## Networking
 ENV PORT 8081

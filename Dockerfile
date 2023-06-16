@@ -62,11 +62,12 @@ RUN go install github.com/tebeka/go2xunit@latest \
   && go install github.com/AlekSi/gocov-xml@latest \
   && go install github.com/githubnemo/CompileDaemon@latest
 
-# Add the tester user
-RUN adduser -mG root tester \
+# Add the tester user - always use id 1000 and add additional root group
+RUN adduser -m --uid 1000 -G root tester \
   && echo "tester ALL = NOPASSWD: ALL" > /etc/sudoers.d/tester-init \
   && echo "tester ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/tester-init
-USER tester
+# Don't switch to user - initial CI setup needs to run as root
+# USER tester
 
 ## Networking
 ENV PORT 8081

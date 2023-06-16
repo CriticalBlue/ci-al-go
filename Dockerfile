@@ -11,6 +11,7 @@ RUN yum update -y \
     rsync \
     sudo \
     tar \
+    tree \
     unzip \
     yum-utils \
     vim \

@@ -66,6 +66,7 @@ RUN go install github.com/tebeka/go2xunit@latest \
 RUN adduser -mG root tester \
   && echo "tester ALL = NOPASSWD: ALL" > /etc/sudoers.d/tester-init \
   && echo "tester ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/tester-init
+USER tester
 
 ## Networking
 ENV PORT 8081

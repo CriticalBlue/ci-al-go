@@ -20,11 +20,17 @@ RUN yum update -y \
   && sudo yum-config-manager --enable epel \
   && yum install git-lfs -y
 
+## AWS CLI
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+  && unzip awscliv2.zip \
+  && ./aws/install \
+  && rm awscliv2.zip
+
 ## Golang
 
-ENV GOLANG_VERSION 1.19.7
+ENV GOLANG_VERSION 1.20.7
 ENV GOLANG_DOWNLOAD_URL https://golang.org/dl/go$GOLANG_VERSION.linux-amd64.tar.gz
-ENV GOLANG_DOWNLOAD_SHA256 7a75720c9b066ae1750f6bcc7052aba70fa3813f4223199ee2a2315fd3eb533d
+ENV GOLANG_DOWNLOAD_SHA256 f0a87f1bcae91c4b69f8dc2bc6d7e6bfcd7524fceec130af525058c0c17b1b44
 
 RUN curl -fsSL "$GOLANG_DOWNLOAD_URL" -o golang.tar.gz \
   && echo "$GOLANG_DOWNLOAD_SHA256  golang.tar.gz" | sha256sum -c - \
@@ -33,9 +39,9 @@ RUN curl -fsSL "$GOLANG_DOWNLOAD_URL" -o golang.tar.gz \
 
 # Packer
 
-ENV PACKER_VERSION 1.5.6
+ENV PACKER_VERSION 1.9.2
 ENV PACKER_DOWNLOAD_URL https://releases.hashicorp.com/packer/"$PACKER_VERSION"/packer_"$PACKER_VERSION"_linux_amd64.zip
-ENV PACKER_DOWNLOAD_SHA256 2abb95dc3a5fcfb9bf10ced8e0dd51d2a9e6582a1de1cab8ccec650101c1f9df
+ENV PACKER_DOWNLOAD_SHA256 34fe48d0d5f99670af15d8a3b581db7ce9d08093ce37240d7c7b996de7947275
 
 # Install packer; removing the symlinked cracklib naming conflict that would
 # prevent the newly installed executable from being found

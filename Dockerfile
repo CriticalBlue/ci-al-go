@@ -5,6 +5,7 @@ LABEL maintainer="CriticalBlue Ltd."
 
 RUN yum update -y \
   && yum install -y \
+    dig \
     git \
     jq \
     python3 python3-pip python3-setuptools \
@@ -37,6 +38,10 @@ RUN curl -fsSL "$GOLANG_DOWNLOAD_URL" -o golang.tar.gz \
   && tar -C /usr/local -xzf golang.tar.gz \
   && rm golang.tar.gz
 
+ENV GOLANG_VERSION ""
+ENV GOLANG_DOWNLOAD_URL ""
+ENV GOLANG_DOWNLOAD_SHA256 ""
+
 # Packer
 
 ENV PACKER_VERSION 1.9.2
@@ -50,6 +55,10 @@ RUN curl -fsSL "$PACKER_DOWNLOAD_URL" -o packer.zip \
   && unzip packer.zip -d /usr/local/bin/ \
   && rm packer.zip \
   && rm /usr/sbin/packer
+
+ENV PACKER_VERSION ""
+ENV PACKER_DOWNLOAD_URL ""
+ENV PACKER_DOWNLOAD_SHA256 ""
 
 # Create the working directory
 RUN mkdir /go

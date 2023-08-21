@@ -5,7 +5,7 @@ LABEL maintainer="CriticalBlue Ltd."
 
 RUN yum update -y \
   && yum install -y \
-    dig \
+    bind-utils \
     git \
     jq \
     python3 python3-pip python3-setuptools \
